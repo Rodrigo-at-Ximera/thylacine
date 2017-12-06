@@ -1,0 +1,67 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   'true': 'foo'
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+en:
+  about: About
+  about_site: About this site
+  about_me: About me
+  browse: Browse
+  new_sighting: Report sighting
+  recent_sightings: Recent sightings
+  cancel: Cancel
+  save_failed: Errors found while saving %{model}. Please correct them and try again.
+  save_success: "%{model} saved successfully."
+  taxonomy_manage_auth_fail: You must be a Taxonomist to create %{model}.
+  must_sign_in: You must be signed in to perform this action.
+
+  sightings:
+    new:
+      get_current_location: Get current
+      get_location_from_picture: Use picture's metadata
+
+  helpers:
+    label:
+      sighting_form:
+        t_class: Class
+        geoLatitude: Latitude
+        geoLongitude: Longitude
+    submit:
+      sighting_form:
+        create: Save Sighting
+
+  activerecord:
+    models:
+      t_class: Class
+
+  devise:
+    registrations:
+      new:
+        minimum_characters: "%{count} minimum characters"

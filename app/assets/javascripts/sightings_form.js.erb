@@ -1,0 +1,196 @@
+//= require sightings
+
+$( document ).ready(function() {
+    var fieldPrefix = "sighting_form_";
+
+    function fieldId2attribute(fieldName){
+        return fieldName.substring(fieldPrefix.length);
+    }
+
+    function attribute2fieldId(category){
+        return fieldPrefix + category;
+    }
+
+    $("#getCurrentGeo").click(function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        navigator.geolocation.getCurrentPosition(function (pos) {
+            thylacine.setPositionFields(pos.coords.latitude, pos.coords.longitude);
+        })
+    });
+
+    $("#pictureInput").change(function (e) {
+        var data = new FormData();
+        data.append('pictureFile', e.target.files[0]);
+        $.ajax({
+            url: Routes.upload_picture_new_sighting_path(),
+            type: 'POST',
+            data: data,
+            cache: false,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function (data, textStatus, jqXHR) {
+                var pictureGeo = $("#getPictureGeo");
+                pictureGeo.prop('disabled', true);
+                if (data.gps) {
+                    pictureGeo.prop('disabled', false);
+                    pictureGeo.click(function (e) {
+                        e.preventDefault();
+                        thylacine.setPositionFields(data.geoLatitude, data.geoLongitude);
+                    });
+
+                }
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#picturePreview').attr('src', e.target.result);
+                };
+                const $pictureInput = $("#pictureInput");
+                reader.readAsDataURL($pictureInput[0].files[0]);
+                $pictureInput.val(null);
+            }
+        });
+    });
+
+    var submitted = false;
+    $("#new_sighting_form").submit(function(){
+        submitted = true;
+    });
+
+    window.onbeforeunload = function() {
+       if (!submitted)
+        $.get(Routes.cleanup_tempfile_new_sighting_path());
+    };
+
+    window.thylacine.mapMarker = undefined;
+
+    var originLat;
+    var originLng;
+    var setMarker;
+
+    var moveListener;
+    var scrollListener;
+
+    google.maps.event.addListener(thylacine.mapView,  'mousedown', function(e){
+        originLat =  e.latLng.lat();
+        originLng = e.latLng.lng();
+        setMarker = true;
+
+        // Mobile
+        scrollListener = google.maps.event.addDomListener(window.document,  'scroll', function(e){
+            setMarker = false;
+        });
+
+        moveListener = google.maps.event.addListener(window.thylacine.mapView,  'drag', function(e){
+            setMarker = false;
+        });
+    });
+
+    google.maps.event.addListener(thylacine.mapView,  'mouseup', function(e){
+        if (setMarker)
+            thylacine.setPositionFields(originLat, originLng);
+
+        if(moveListener)
+            moveListener.remove();
+
+        if(scrollListener)
+            scrollListener.remove();
+    });
+
+    window.thylacine.setPositionFields = function (lat, long) {
+        $("#"+attribute2fieldId('geoLatitude')).val(lat);
+        $("#"+attribute2fieldId('geoLongitude')).val(long);
+        thylacine.setMarkerToPosition();
+    };
+
+    const latLongChangeHandler = function (e) {
+        if (!e.target.value)
+            e.target.value = 0;
+        thylacine.setMarkerToPosition();
+    };
+
+    $("#"+attribute2fieldId('geoLatitude')).change(latLongChangeHandler);
+    $("#"+attribute2fieldId('geoLongitude')).change(latLongChangeHandler);
+
+    window.thylacine.setMarkerToPosition = function () {
+        if (!thylacine.mapMarker) {
+            thylacine.mapMarker = new google.maps.Marker();
+            thylacine.mapMarker.setMap(thylacine.mapView);
+        }
+        var newLatlong = {
+            lat: parseFloat($("#"+attribute2fieldId('geoLatitude')).val()),
+            lng: parseFloat($("#"+attribute2fieldId('geoLongitude')).val())
+        };
+        thylacine.mapMarker.setPosition(newLatlong);
+        thylacine.mapView.panTo(newLatlong);
+    };
+
+    var taxonomy = ['species', 'genus', 'family', 'order', 't_class', 'phylum', 'kingdom'];
+
+    for(var category of taxonomy){
+        $("#"+attribute2fieldId(category)).autocomplete({
+            source: Routes.taxonomy_autocomplete_path(category),
+            minLength: 3,
+            select: function( event, ui ) {
+                var categoryS = fieldId2attribute(event.target.id);
+                $("#"+attribute2fieldId(categoryS)+"_id").val(ui.item.id);
+                $(event.target).siblings('.alert').addClass('d-none');
+                $.ajax({
+                    url: Routes.taxonomy_ancestors_path(categoryS, ui.item.id),
+                    dataType: 'json'
+                }).done(function( data, textStatus, jqXHR ) {
+                    for(var idx in data){
+                        var obj = data[idx];
+                        var field = $("#"+attribute2fieldId(obj.category))
+                        field.val(obj.label);
+                        field.attr("readonly", true);
+                        field.addClass("form-control-plaintext");
+                        $("#"+attribute2fieldId(obj.category)+"_id").val(obj.id);
+                        field.siblings('.alert').addClass('d-none');
+                    }
+                });
+            },
+            change: function( event, ui ) {
+                var categoryC = fieldId2attribute(event.target.id);
+                var value = null;
+                if(ui.item)
+                    value = ui.item.id;
+                else {
+                    var idx = taxonomy.indexOf(categoryC);
+                    for (var i = idx+1; i < taxonomy.length; i++) {
+                        var local_category = taxonomy[i];
+                        var field = $("#"+attribute2fieldId(local_category));
+                        field.attr("readonly", false);
+                        field.removeClass("form-control-plaintext");
+                        field.val(null);
+                        $("#"+attribute2fieldId(local_category)+"_id").val(null);
+                        field.siblings('.alert').addClass('d-none');
+                    }
+                    if(event.target.value!='')
+                      $(event.target).siblings('.alert').removeClass('d-none');
+                    else
+                      $(event.target).siblings('.alert').addClass('d-none');
+                }
+                $("#"+attribute2fieldId(categoryC)+"_id").val(value);
+            }
+
+        });
+    }
+
+    // Mark taxonomy fields as readonly on load
+    var readonly = false
+    for (category of taxonomy){
+        var field = $("#"+attribute2fieldId(category));
+        var idField = $("#"+attribute2fieldId(category)+"_id");
+        if (readonly){
+            field.attr("readonly", true);
+            field.addClass("form-control-plaintext");
+        } else if (idField.val())
+            readonly = true;
+    }
+
+} );
+
+
+
+

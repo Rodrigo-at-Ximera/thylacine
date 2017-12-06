@@ -1,0 +1,69 @@
+<% content_for :head do %>
+  <%= map_javascript %>
+  <%= javascript_include_tag 'sightings_form', 'data-turbolinks-track': 'reload'  %>
+<% end %>
+
+<%= form_for @sighting_form, url: sightings_path do |form| %>
+    <div class="row border border-primary rounded">
+      <div class="col-md-4">
+        <%= form.file_field :picture, id: :pictureInput %>
+        <label for="pictureInput">
+            <%=image_tag picture_new_sighting_path,
+                         class:'img-fluid rounded border border-primary '+
+                             (@sighting_form.errors&.include?(:pictureData) ? 'bg-danger': 'bg-primary'),
+                         id:'picturePreview'%>
+        </label>
+        <% if @sighting_form.errors&.include?(:pictureData) %>
+            <div class= "invalid-feedback d-block">
+              <%=@sighting_form.errors[:pictureData].collect { |e| e.capitalize }.join(', ') %>
+            </div>
+        <% end %>
+
+      </div>
+      <div class="col-md-8">
+        <div class="form-row">
+          <%= taxonomy_input_group form, :species %>
+        </div>
+        <div class="form-row">
+          <%= taxonomy_input_group form, :genus %>
+          <%= taxonomy_input_group form, :family %>
+        </div>
+        <div class="form-row">
+          <%= taxonomy_input_group form, :order %>
+          <%= taxonomy_input_group form, :t_class %>
+        </div>
+        <div class="form-row">
+          <%= taxonomy_input_group form, :phylum %>
+          <%= taxonomy_input_group form, :kingdom %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row border border-primary rounded">
+      <div class="col-md-3">
+        <div class="form-row">
+          <div class="form-group col">
+            <%= form.label :geoLatitude %>
+            <%= form.number_field :geoLatitude, min: -90, max: 90, step: 0.000000000000001, class: 'form-control'  %>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <%= form.label :geoLongitude%>
+            <%= form.number_field :geoLongitude, min: -180, max: 180 , step: 0.000000000000001, class: 'form-control'  %><br/>
+          </div>
+        </div>
+        <button id="getCurrentGeo" class="btn btn-primary"><%=t '.get_current_location'%></button>
+        <button id="getPictureGeo" class="btn btn-primary" disabled="true"><%=t '.get_location_from_picture'%></button>
+
+      </div>
+      <div class="col-md-9">
+         <div id="map" class="rounded border border-primary"></div>
+      </div>
+    </div>
+    <div class="row border border-dark rounded bg-primary d-flex justify-content-around">
+      <%= button_tag (I18n.t :cancel),  class: 'btn btn-dark'%>
+      <%= form.submit class: 'btn btn-dark'%>
+    </div>
+
+<% end %>

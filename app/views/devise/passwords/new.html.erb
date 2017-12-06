@@ -1,0 +1,25 @@
+<div class="card w-lg-50 ml-auto mr-auto border-primary standalone">
+  <div class="card-header bg-primary text-white">
+    <%=image_tag 'thylacine.svg', class: 'd-inline-block align-text-bottom'%>
+    <div class="brand d-inline-block">Thylacine</div>
+    <%=t '.forgot_your_password' %>
+  </div>
+  <div class="card-body">
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= devise_error_messages! %>
+
+      <div class="form-group">
+        <%= f.label :email %><br />
+        <%= f.email_field :email, autofocus: true, class: 'form-control' %>
+      </div>
+
+      <div class="row d-flex justify-content-around mb-2">
+        <%= f.submit (t '.send_me_reset_password_instructions'), class: 'btn btn-primary'  %>
+        <%= link_to (t :cancel), root_path,  class: 'btn btn-danger'%>
+      </div>
+    <% end %>
+    <div class="row text-center small justify-content-center">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

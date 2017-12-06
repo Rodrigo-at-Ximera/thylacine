@@ -1,0 +1,52 @@
+$dark: #465a23;
+$primary: #698835;
+$navbar-brand-font-size: 2rem;
+$popover-bg: whitesmoke;
+
+
+@import "bootstrap";
+
+.fields-with-error .form-control {
+  @extend .is-invalid
+}
+
+.fields-with-error label {
+  @extend .text-danger
+}
+
+.card-columns {
+  @include media-breakpoint-only(sm) {
+    column-count: 2;
+  }
+  @include media-breakpoint-only(md) {
+    column-count: 3;
+  }
+  @include media-breakpoint-only(lg) {
+    column-count: 4;
+  }
+  @include media-breakpoint-only(xl) {
+    column-count: 5;
+  }
+
+}
+
+#map-info-window img {
+  max-width:10rem;
+  max-height:10rem;
+  box-shadow: .25rem .25rem .5rem $dark;
+  border-radius: 1rem;
+  margin-bottom: .5rem;
+  margin-right: .5rem;
+}
+
+abbr[title], abbr[data-original-title] {
+  text-decoration: none;
+  border-bottom: 1px $primary dashed;
+}
+
+.w-lg-50 {
+  width: 50%;
+  @include media-breakpoint-down(md) {
+    width: 100%;
+  }
+}

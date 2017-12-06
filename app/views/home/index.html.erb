@@ -1,0 +1,15 @@
+<header class="masthead">
+  <div class="container">
+    <%=image_tag 'thylacine.png', class: 'img-fluid'%>
+    <div class="intro-text">
+      <span class="name">
+        Thylacine
+        <button class="btn badge badge-pill badge-info"data-toggle="popover" data-trigger="click"
+                data-placement="bottom" data-html="true" data-content='<%=render 'thylacine_info'%>'>?</button>
+      </span>
+      <% @nav_items.each do |label, target| %>
+        <%=link_to I18n.t(label), {controller: target[0], action: target[1]}, class: 'btn btn-outline-light' %>
+      <% end %>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Thylacine</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <%= csrf_meta_tags %>
+
+    <%= favicon_link_tag 'favicon.png'%>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= yield :head %>
+  </head>
+
+  <body class="fill">
+    <header class="navbar navbar-expand-lg navbar-dark bg-dark rounded">
+
+      <%=link_to(root_path, class: 'navbar-brand') do %>
+          <%=image_tag 'thylacine.svg', class: 'd-inline-block align-text-bottom'%>
+          <div class="d-inline-block">Thylacine</div>
+      <% end %>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto ml-md-auto text-center">
+          <% @nav_items.each do |label, target| %>
+            <li class="nav-item <%= controller_name == target[0] && target[1..-1].include?(action_name) ? 'active' : ''%>">
+              <%=link_to I18n.t(label), {controller: target[0], action: target[1]}, class: 'nav-link'%>
+            </li>
+          <% end %>
+        </ul>
+        <%= render 'layouts/nav_icons' %>
+      </div>
+    </header>
+    <div class="container-fluid fill">
+      <%= render 'layouts/notices' %>
+      <%= yield %>
+    </div>
+
+  </body>
+</html>

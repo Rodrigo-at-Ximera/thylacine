@@ -1,0 +1,26 @@
+<ul class="navbar-nav flex-row ml-md-auto d-md-flex nav-fill">
+  <li class="nav-item dropdown">
+    <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="localeSelection" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <%=I18n.locale%>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" id="localeSelectionMenu" aria-labelledby="localeSelection">
+      <% I18n.available_locales.each do |l|
+        classes = 'dropdown-item'
+        if I18n.locale == l
+          classes += ' active'
+        end
+      %>
+        <%=link_to l, {controller: controller_name, action: action_name, l:l}, class: classes %>
+      <% end %>
+    </div>
+  </li>
+  <% @nav_icons.each do |icon, target| %>
+    <li class="nav-item">
+      <%=link_to target[0], method: target[1], class: 'nav-link p-2' do %>
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg">
+          <use xlink:href="<%=image_path('icons.svg')%>#<%=icon%>"></use>
+        </svg>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

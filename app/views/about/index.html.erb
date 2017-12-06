@@ -1,0 +1,28 @@
+<div class="row about">
+  <div class="col-lg-6">
+    <div class="card bg-light border-primary mt-3">
+      <div class="card-header bg-primary text-light"><%=t :about_site %></div>
+      <div class="card-body row">
+        <div class="col-4 text-center">
+          <%=image_tag 'thylacine.png', class: 'w-100'%>
+        </div>
+        <div class="col-8">
+          <%=render 'about_site' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card bg-light border-primary mt-3">
+      <div class="card-header bg-primary text-light"><%=t :about_me %></div>
+      <div class="card-body row">
+        <div class="col-4 text-center">
+          <%=image_tag 'rodrigo.jpg', class: 'w-75 rounded-circle'%>
+        </div>
+        <div class="col-8">
+          <%=render 'about_me' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

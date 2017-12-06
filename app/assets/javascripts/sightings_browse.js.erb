@@ -1,0 +1,201 @@
+//= require sightings
+//= require markerclusterer_colors.js
+
+$( document ).ready(function() {
+    var initTree = function(){
+        $.get(Routes.taxonomy_children_path('life', 0), function(data){
+            var parent = $("#life-tree").children("ul");
+            for(var row of data) {
+                thylacine.addTreeNode(parent, row)
+            }
+        });
+    };
+    initTree();
+} );
+
+window.thylacine.addTreeNode = function (parent, row){
+    var node =  document.createElement("li");
+    var $node = $(node);
+    $node.addClass("node");
+    $node.data("category", row.category);
+    $node.data("id", row.id);
+
+    var pretty_check = document.createElement("div");
+    var $pretty_check = $(pretty_check);
+    $pretty_check.addClass('pretty-check');
+    if(available_colors.length == 0)
+        $pretty_check.addClass('disabled');
+    $pretty_check.click(thylacine.toggleSightings);
+    $pretty_check.append(document.createElement("div"));
+    $node.append(pretty_check);
+
+    if(row.has_children){
+        $node.addClass("closed");
+
+        var toggle = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        var $toggle = $(toggle);
+        $toggle.addClass("icon");
+
+        var svgUseR = document.createElementNS("http://www.w3.org/2000/svg", "use");
+        svgUseR.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "<%=image_path('icons.svg')%>#icon-circle-right");
+        $toggle.append(svgUseR);
+
+        var svgUseD = document.createElementNS("http://www.w3.org/2000/svg", "use");
+        svgUseD.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "<%=image_path('icons.svg')%>#icon-circle-down");
+        $toggle.append(svgUseD);
+
+        $toggle.click(thylacine.toggleNode);
+
+        $node.append(toggle);
+    }
+
+    var title = document.createElement("span");
+    $(title).addClass("title");
+    title.append(row.name);
+    node.append(title);
+
+    parent.append(node);
+};
+
+window.thylacine.toggleNode = function(e){
+    var $node = $(e.currentTarget).closest(".node");
+    if($node.data('cached')) {
+        if ($node.data("slide-state") == "closed")
+            thylacine.expandNode($node);
+        else
+            thylacine.collapseNode($node);
+    } else {
+        $.get(Routes.taxonomy_children_path($node.data("category"), $node.data("id")), function(data){
+            var container = document.createElement("ul");
+            var $container = $(container);
+            $container.addClass("branches");
+            for(var row of data)
+                thylacine.addTreeNode($container, row)
+            container.style.display = 'none';
+            $node.append($container);
+            $node.data("slide-state", "closed");
+            $node.data("cached", true);
+            thylacine.expandNode($node);
+        });
+    }
+
+};
+
+window.thylacine.expandNode = function($node){
+    $node.children(".branches").slideDown();
+    $node.data("slide-state", "open");
+    $node.removeClass("closed");
+    $node.addClass("open");
+};
+
+window.thylacine.collapseNode = function($node){
+    $node.children(".branches").slideUp();
+    $node.data("slide-state", "closed");
+    $node.removeClass("open");
+    $node.addClass("closed");
+};
+
+var available_colors = [
+    [255, 0, 0],
+    [0, 255, 0],
+    [0, 255, 255],
+    [255, 0, 255],
+    [255, 255, 0],
+    [0, 0, 255]
+];
+
+window.thylacine.toggleSightings = function(e){
+    var $node = $(e.currentTarget).closest(".node");
+    if($(e.currentTarget).hasClass('disabled') || $node.hasClass('loading'))
+        return;
+    if($node.data('used_color'))
+        thylacine.hideSightings($node);
+    else
+        thylacine.showSightings($node);
+}
+
+window.thylacine.showSightings = function($node){
+    var color = available_colors.shift();
+    thylacine.setNodeColor($node, color);
+    if(!$node.data("marker_cluster")){
+      $node.addClass("loading");
+      $.get(Routes.taxonomy_sightings_path($node.data("category"), $node.data("id")), function(data){
+          var markers = data.map(function(sighting, idx){
+              var marker = new google.maps.Marker({
+                  position: { lat: parseFloat(sighting.lat), lng: parseFloat(sighting.lng) },
+                  icon: getIcon(color)
+              });
+              marker.thylacine_species_id = sighting.id;
+              marker.addListener('click', thylacine.showSightingInfo);
+              return marker;
+          });
+          var marker_cluster = new MarkerClusterer(window.thylacine.mapView, markers, {color: color});
+          $node.data("marker_cluster", marker_cluster);
+          $node.removeClass("loading");
+          var $badge = $node.find("> .title > .badge");
+          if($badge.length ==0){
+              $badge = $(document.createElement("span"));
+              $badge.addClass("badge badge-primary ml-1");
+              $node.children(".title").append($badge);
+          }
+          $badge.text(data.length);
+      });
+    }else{
+        $node.data("marker_cluster").show(color);
+    }
+};
+
+window.thylacine.hideSightings = function($node){
+    available_colors.unshift($node.data("used_color"));
+    $node.data("marker_cluster").hide();
+    thylacine.setNodeColor($node, null)
+};
+
+window.thylacine.setNodeColor = function($node, color){
+    if(color){
+        $node.data("used_color", color);
+        $node.find(" > .pretty-check >").css( "background-color",
+                                              "rgb(" + color[0] + ", "
+                                                     + color[1] + ", "
+                                                     + color[2] + ")");
+        if(available_colors.length == 0)
+            $(".node").each(function(){
+                if(!$(this).data("used_color"))
+                    $(this).children(".pretty-check").addClass("disabled");
+            });
+
+    } else {
+        $node.removeData("used_color");
+        $node.find(" > .pretty-check >").css( "background-color", "transparent");
+        $(".pretty-check.disabled").each(function(){
+            $(this).removeClass("disabled");
+        });
+    }
+}
+
+window.thylacine.showSightingInfo = function(){
+    if(!thylacine.mapInfoWindow)
+        thylacine.mapInfoWindow = new google.maps.InfoWindow();
+    var marker = this;
+    $.get(Routes.sighting_path(this.thylacine_species_id), {info: true, l: '<%=I18n.locale%>'}, function(data){
+        var $mapInfoWindow = $("#map-info-window").clone();
+        $mapInfoWindow.find(".species").text(data.species);
+        $mapInfoWindow.find(".classification").html(data.classification.join('<br/>'));
+        $mapInfoWindow.find(".date").text(data.date);
+        $mapInfoWindow.find(".picture").attr('src', Routes.picture_sighting_path(data.id));
+
+        thylacine.mapInfoWindow.setContent($mapInfoWindow[0]);
+        thylacine.mapInfoWindow.open(thylacine.mapView, marker);
+    });
+}
+
+getIcon = function (color_array){
+    return {
+        anchor: new google.maps.Point(16,32),
+        fillColor: 'rgb('+ color_array[0] + ', ' + color_array[1] + ', ' + color_array[2] + ')',
+        fillOpacity: 0.75,
+        path: "M16 0c-5.523 0-10 4.477-10 10 0 10 10 22 10 22s10-12 10-22c0-5.523-4.477-10-10-10zM16 16.125c-3.383 0-6.125-2.742-6.125-6.125s2.742-6.125 6.125-6.125 6.125 2.742 6.125 6.125-2.742 6.125-6.125 6.125zM12.125 10c0-2.14 1.735-3.875 3.875-3.875s3.875 1.735 3.875 3.875c0 2.14-1.735 3.875-3.875 3.875s-3.875-1.735-3.875-3.875z",
+        strokeWeight: 1,
+        strokeOpacity: 0.25
+    }
+}

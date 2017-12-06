@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  species: one
+  geoLatitude: 9.99
+  geoLongitude: 9.99
+  pictureData: 
+  pictureContentType: MyString
+  user: one
+
+two:
+  species: two
+  geoLatitude: 9.99
+  geoLongitude: 9.99
+  pictureData: 
+  pictureContentType: MyString
+  user: two

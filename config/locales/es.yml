@@ -1,0 +1,147 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   'true': 'foo'
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+es:
+  about: Acerca de
+  about_site: Acerca del sitio
+  about_me: Acerca de mi
+  browse: Explorar
+  new_sighting: Reportar avistamiento
+  recent_sightings: Avistamientos recientes
+  cancel: Cancelar
+  save: Guardar
+  save_failed: Se encontraron errores al guardar %{model}. Por favor correjilos e intenta de nuevo.
+  save_success: "%{model} guardado exitosamente."
+  taxonomy_manage_auth_fail: Debés ser un Taxonomista para crear %{model}
+  must_sign_in: Debes estar logineado para realizar esta acción.
+
+  sightings:
+    new:
+      get_current_location: Obtener actual
+      get_location_from_picture: Usar metadata de la imagen
+
+  helpers:
+    label:
+      sighting_form:
+        species: Especie
+        genus: Género
+        family: Familia
+        order: Orden
+        t_class: Clase
+        phylum: Filo
+        kingdom: Reino
+        geoLatitude: Latitud
+        geoLongitude: Longitud
+    submit:
+      sighting_form:
+        create: Guardar Avistamiento
+
+  activerecord:
+    models:
+      sighting: Avistamiento
+      species: Especie
+      genus: Género
+      family: Familia
+      order: Orden
+      t_class: Clase
+      phylum: Filo
+      kingdom: Reino
+    errors:
+      messages:
+        blank: no puede estar en blanco
+        not_a_number: no es un número
+
+  time:
+      am: am
+      formats:
+        default: "%A, %-d de %B de %Y %H:%M:%S %z"
+        long: "%-d de %B de %Y %H:%M"
+        short: "%-d de %b %H:%M"
+      pm: pm
+
+  date:
+    abbr_day_names:
+      - dom
+      - lun
+      - mar
+      - mié
+      - jue
+      - vie
+      - sáb
+    abbr_month_names:
+      -
+      - ene
+      - feb
+      - mar
+      - abr
+      - may
+      - jun
+      - jul
+      - ago
+      - sep
+      - oct
+      - nov
+      - dic
+    day_names:
+      - domingo
+      - lunes
+      - martes
+      - miércoles
+      - jueves
+      - viernes
+      - sábado
+    formats:
+      default: "%-d/%-m/%Y"
+      long: "%-d de %B de %Y"
+      short: "%-d de %b"
+    month_names:
+      -
+      - enero
+      - febrero
+      - marzo
+      - abril
+      - mayo
+      - junio
+      - julio
+      - agosto
+      - septiembre
+      - octubre
+      - noviembre
+      - diciembre
+    order:
+      - :day
+      - :month
+      - :year
+
+  devise:
+      registrations:
+        new:
+          minimum_characters: "Mínimo %{count} caracteres"

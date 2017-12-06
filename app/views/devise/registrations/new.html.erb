@@ -1,0 +1,39 @@
+<div class="card w-lg-50 ml-auto mr-auto border-primary standalone">
+  <div class="card-header bg-primary text-white">
+    <%=image_tag 'thylacine.svg', class: 'd-inline-block align-text-bottom'%>
+    <div class="brand d-inline-block">Thylacine</div>
+    <%=t '.sign_up' %>
+  </div>
+  <div class="card-body">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= devise_error_messages! %>
+
+      <div class="form-group">
+        <%= f.label :email %>
+        <%= f.email_field :email, autofocus: true, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password %>
+        <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
+        <% if @minimum_password_length %>
+          <small class="form-text text-muted"><%=t '.minimum_characters', count: @minimum_password_length%></small>
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
+      </div>
+
+      <div class="row d-flex justify-content-around mb-2">
+        <%= f.submit (t '.sign_up'), class: 'btn btn-primary'  %>
+        <%= link_to (t :cancel), root_path,  class: 'btn btn-danger'%>
+      </div>
+    <% end %>
+
+    <div class="row text-center small justify-content-center">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

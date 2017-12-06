@@ -1,0 +1,24 @@
+<% content_for :head do %>
+  <%= map_javascript %>
+  <%= javascript_include_tag 'sightings_browse', 'data-turbolinks-track': 'reload'  %>
+<% end %>
+
+<div class="row fill">
+  <div class="col-md-3 border border-primary rounded text-primary mt-2" id="life-tree">
+    <ul></ul>
+  </div>
+  <div class="col-md-9 mt-2">
+    <div id="map" class="rounded border border-primary"></div>
+  </div>
+</div>
+
+<div class="d-none">
+  <div id="map-info-window" class="text-center text-primary">
+    <h4 class="species mb-0"></h4>
+    <small class="date"></small>
+    <div class="info-body mt-2">
+      <%=image_tag '', class: 'picture float-left'%>
+      <h6 class="classification text-right"></h6>
+    </div>
+  </div>
+</div>

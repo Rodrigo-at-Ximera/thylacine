@@ -1,0 +1,10 @@
+<% if notice || alert%>
+<div class="row">
+  <% if notice %>
+    <div class="col alert alert-success text-center" role="alert"><%= notice %></div>
+  <% end %>
+  <% if alert %>
+    <div class="col alert alert-danger text-center" role="alert"><%= alert %></div>
+  <% end %>
+</div>
+<% end %>
