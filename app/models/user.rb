@@ -5,7 +5,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  before_create :set_default_role
+  before_validation :set_default_role
 
   ROLES = %w[spotter taxonomist admin].freeze
 

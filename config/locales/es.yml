@@ -78,6 +78,7 @@ es:
       messages:
         blank: no puede estar en blanco
         not_a_number: no es un número
+        inclusion: no esta incluido en la lista
 
   time:
       am: am
