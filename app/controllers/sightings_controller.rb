@@ -81,7 +81,7 @@ class SightingsController < ThylacineController
       filename = 'uploaded_image'
       type = session[:picture_content_type]
     else
-      data = Rails.application.assets['picture_add.png'].source
+      data = Rails.application.assets_manifest.find_sources('picture_add.png').first
       filename = 'picture_add.png'
       type = 'image/png'
     end
