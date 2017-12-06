@@ -127,7 +127,8 @@ $( document ).ready(function() {
 
     var taxonomy = ['species', 'genus', 'family', 'order', 't_class', 'phylum', 'kingdom'];
 
-    for(var category of taxonomy){
+    for(var category_idx in taxonomy){
+        var category = taxonomy[category_idx];
         $("#"+attribute2fieldId(category)).autocomplete({
             source: Routes.taxonomy_autocomplete_path(category),
             minLength: 3,
@@ -179,7 +180,8 @@ $( document ).ready(function() {
 
     // Mark taxonomy fields as readonly on load
     var readonly = false
-    for (category of taxonomy){
+    for (category_idx in taxonomy){
+        var category = taxonomy[category_idx];
         var field = $("#"+attribute2fieldId(category));
         var idField = $("#"+attribute2fieldId(category)+"_id");
         if (readonly){

@@ -5,7 +5,8 @@ $( document ).ready(function() {
     var initTree = function(){
         $.get(Routes.taxonomy_children_path('life', 0), function(data){
             var parent = $("#life-tree").children("ul");
-            for(var row of data) {
+            for(var row_idx in data) {
+                var row = data[row_idx];
                 thylacine.addTreeNode(parent, row)
             }
         });
@@ -69,8 +70,10 @@ window.thylacine.toggleNode = function(e){
             var container = document.createElement("ul");
             var $container = $(container);
             $container.addClass("branches");
-            for(var row of data)
+            for(var row_idx in data) {
+                var row = data[row_idx];
                 thylacine.addTreeNode($container, row)
+            }
             container.style.display = 'none';
             $node.append($container);
             $node.data("slide-state", "closed");

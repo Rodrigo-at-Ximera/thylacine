@@ -151,7 +151,7 @@ function MarkerClusterer(map, opt_markers, opt_options) {
     const that = this;
     google.maps.event.addListener(this.map_, 'zoom_changed', function() {
     // Determines map type and prevent illegal zoom levels
-        let zoom = that.map_.getZoom();
+        var zoom = that.map_.getZoom();
         const minZoom = that.map_.minZoom || 0;
         const maxZoom = Math.min(that.map_.maxZoom || 100,
             that.map_.mapTypes[that.map_.getMapTypeId()].maxZoom);
@@ -194,7 +194,7 @@ MarkerClusterer.prototype.MARKER_CLUSTER_BG_COLOR_ = [255, 0, 0];
  */
 MarkerClusterer.prototype.extend = function(obj1, obj2) {
   return (function(object) {
-    for (let property in object.prototype) {
+    for (var property in object.prototype) {
       this.prototype[property] = object.prototype[property];
     }
     return this;
@@ -226,7 +226,7 @@ MarkerClusterer.prototype.setupStyles_ = function() {
     return;
   }
 
-    let i = 0, size;
+    var i = 0, size;
     for (; size = this.sizes[i]; i++) {
     this.styles_.push({
         height: size,
@@ -242,7 +242,7 @@ MarkerClusterer.prototype.setupStyles_ = function() {
 MarkerClusterer.prototype.fitMapToMarkers = function() {
     const markers = this.getMarkers();
     const bounds = new google.maps.LatLngBounds();
-    let i = 0, marker;
+    var i = 0, marker;
     for (; marker = markers[i]; i++) {
     bounds.extend(marker.getPosition());
   }
@@ -339,9 +339,9 @@ MarkerClusterer.prototype.getMaxZoom = function() {
  *  @private
  */
 MarkerClusterer.prototype.calculator_ = function(markers, numStyles) {
-    let index = 0;
+    var index = 0;
     const count = markers.length;
-    let dv = count;
+    var dv = count;
     while (dv !== 0) {
     dv = parseInt(dv / 10, 10);
     index++;
@@ -386,11 +386,11 @@ MarkerClusterer.prototype.getCalculator = function() {
  */
 MarkerClusterer.prototype.addMarkers = function(markers, opt_nodraw) {
   if (markers.length) {
-    for (let i = 0, marker; marker = markers[i]; i++) {
+    for (var i = 0, marker; marker = markers[i]; i++) {
       this.pushMarkerTo_(marker);
     }
   } else if (Object.keys(markers).length) {
-    for (let marker in markers) {
+    for (var marker in markers) {
       this.pushMarkerTo_(markers[marker]);
     }
   }
@@ -445,11 +445,11 @@ MarkerClusterer.prototype.addMarker = function(marker, opt_nodraw) {
  * @private
  */
 MarkerClusterer.prototype.removeMarker_ = function(marker) {
-    let index = -1;
+    var index = -1;
     if (this.markers_.indexOf) {
     index = this.markers_.indexOf(marker);
   } else {
-      let i = 0, m;
+      var i = 0, m;
       for (; m = this.markers_[i]; i++) {
       if (m == marker) {
         index = i;
@@ -501,9 +501,9 @@ MarkerClusterer.prototype.removeMarkers = function(markers, opt_nodraw) {
   // create a local copy of markers if required
   // (removeMarker_ modifies the getMarkers() array in place)
     const markersCopy = markers === this.getMarkers() ? markers.slice() : markers;
-    let removed = false;
+    var removed = false;
 
-    let i = 0, marker;
+    var i = 0, marker;
     for (; marker = markersCopy[i]; i++) {
       const r = this.removeMarker_(marker);
       removed = removed || r;
@@ -615,7 +615,7 @@ MarkerClusterer.prototype.setMinClusterSize = function(size) {
  * @return {google.maps.LatLngBounds} The extended bounds.
  */
 MarkerClusterer.prototype.getExtendedBounds = function(bounds) {
-    let projection = this.getProjection();
+    var projection = this.getProjection();
 
     if (!projection) return null;
 
@@ -676,12 +676,12 @@ MarkerClusterer.prototype.clearMarkers = function() {
  */
 MarkerClusterer.prototype.resetViewport = function(opt_hide) {
   // Remove all the clusters
-  for (let i = 0, cluster; cluster = this.clusters_[i]; i++) {
+  for (var i = 0, cluster; cluster = this.clusters_[i]; i++) {
     cluster.remove();
   }
 
   // Reset the markers to not be added and to be invisible.
-  for (let i = 0, marker; marker = this.markers_[i]; i++) {
+  for (var i = 0, marker; marker = this.markers_[i]; i++) {
     marker.isAdded = false;
     if (opt_hide) {
       marker.setMap(null);
@@ -703,7 +703,7 @@ MarkerClusterer.prototype.repaint = function() {
   // Remove the old clusters.
   // Do it in a timeout so the other clusters have been drawn first.
   window.setTimeout(function() {
-      let i = 0, cluster;
+      var i = 0, cluster;
       for (; cluster = oldClusters[i]; i++) {
       cluster.remove();
     }
@@ -751,10 +751,10 @@ MarkerClusterer.prototype.distanceBetweenPoints_ = function(p1, p2) {
  * @private
  */
 MarkerClusterer.prototype.addToClosestCluster_ = function(marker) {
-    let distance = 40000; // Some large number
-    let clusterToAddTo = null;
+    var distance = 40000; // Some large number
+    var clusterToAddTo = null;
     const pos = marker.getPosition();
-    for (let i = 0, cluster; cluster = this.clusters_[i]; i++) {
+    for (var i = 0, cluster; cluster = this.clusters_[i]; i++) {
       const center = cluster.getCenter();
       if (center) {
         const d = this.distanceBetweenPoints_(center, marker.getPosition());
@@ -791,7 +791,7 @@ MarkerClusterer.prototype.createClusters_ = function() {
         this.map_.getBounds().getNorthEast());
     const bounds = this.getExtendedBounds(mapBounds);
 
-    let i = 0, marker;
+    var i = 0, marker;
     for (; marker = this.markers_[i]; i++) {
     if (!marker.isAdded && this.isMarkerInBounds_(marker, bounds)) {
       this.addToClosestCluster_(marker);
@@ -844,7 +844,7 @@ Cluster.prototype.isMarkerAlreadyAdded = function(marker) {
   if (this.markers_.indexOf) {
     return this.markers_.indexOf(marker) != -1;
   } else {
-      let i = 0, m;
+      var i = 0, m;
       for (; m = this.markers_[i]; i++) {
       if (m == marker) {
         return true;
@@ -891,7 +891,7 @@ Cluster.prototype.addMarker = function(marker) {
 
   if (len == this.minClusterSize_) {
     // Hide the markers that were showing.
-    for (let i = 0; i < len; i++) {
+    for (var i = 0; i < len; i++) {
       this.markers_[i].setMap(null);
     }
   }
@@ -923,7 +923,7 @@ Cluster.prototype.getMarkerClusterer = function() {
 Cluster.prototype.getBounds = function() {
     const bounds = new google.maps.LatLngBounds(this.center_, this.center_);
     const markers = this.getMarkers();
-    let i = 0, marker;
+    var i = 0, marker;
     for (; marker = markers[i]; i++) {
     bounds.extend(marker.getPosition());
   }
@@ -1012,7 +1012,7 @@ Cluster.prototype.updateIcon = function() {
 
     if (mz && zoom > mz) {
     // The zoom is greater than our max zoom so show all the markers in cluster.
-      let i = 0, marker;
+      var i = 0, marker;
       for (; marker = this.markers_[i]; i++) {
       marker.setMap(this.map_);
     }
@@ -1098,9 +1098,9 @@ ClusterIcon.prototype.onAdd = function() {
 
     const that = this;
 
-    let moveListener;
-    let scrollListener;
-    let scroll;
+    var moveListener;
+    var scrollListener;
+    var scroll;
 
     google.maps.event.addDomListener(this.div_,  'mousedown', function(e){
         scroll = false;
@@ -1224,7 +1224,7 @@ ClusterIcon.prototype.setSums = function(sums) {
  * Sets the icon to the the styles.
  */
 ClusterIcon.prototype.useStyle = function() {
-    let index = Math.max(0, this.sums_.index - 1);
+    var index = Math.max(0, this.sums_.index - 1);
     index = Math.min(this.styles_.length - 1, index);
     const style = this.styles_[index];
     this.height_ = style['height'];
@@ -1347,7 +1347,7 @@ ClusterIcon.prototype['onRemove'] = ClusterIcon.prototype.onRemove;
 
 Object.keys = Object.keys || function(o) {
     const result = [];
-    for(let name in o) {
+    for(var name in o) {
         if (o.hasOwnProperty(name))  
           result.push(name);  
     }  
