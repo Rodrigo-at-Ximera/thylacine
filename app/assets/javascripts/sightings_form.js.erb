@@ -54,15 +54,10 @@ $( document ).ready(function() {
                     });
 
                 }
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#picturePreview').attr('src', e.target.result);
-                    $("#progress_bar").addClass("d-none");
-                    $("#picture_label").removeClass("d-none");
-                };
-                const $pictureInput = $("#pictureInput");
-                reader.readAsDataURL($pictureInput[0].files[0]);
-                $pictureInput.val(null);
+                $('#picturePreview').attr('src', Routes.picture_path(data.id));
+                $("#progress_bar").addClass("d-none");
+                $("#picture_label").removeClass("d-none");
+                $("#pictureInput").val(null);
             },
             xhr: function() {
               var xhr = new window.XMLHttpRequest();

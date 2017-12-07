@@ -16,7 +16,7 @@ class PicturesController < ApplicationController
 
     session[:picture_id] = picture.id
 
-    response_data = { gps: false }
+    response_data = { gps: false, id: picture.id }
     if params[:pictureFile].content_type == 'image/jpeg'
       e = EXIFR::JPEG.new(params[:pictureFile].tempfile.path)
       if e.exif? && e.exif.gps
