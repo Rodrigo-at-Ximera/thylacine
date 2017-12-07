@@ -1,7 +1,7 @@
 <div class="card-columns">
   <% @sightings.each do |sighting| %>
       <div class="card text-center bg-primary text-white">
-        <%=image_tag picture_sighting_path(sighting.id), class: 'card-img-top'%>
+        <%=image_tag picture_path(sighting.picture), class: 'card-img-top'%>
         <div class="card-img-overlay map-overlay">
           <%=static_map_image sighting.geoLatitude, sighting.geoLongitude, class: 'w-100'%>
         </div>

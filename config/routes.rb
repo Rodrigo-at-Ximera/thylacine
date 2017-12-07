@@ -4,12 +4,12 @@ Rails.application.routes.draw do
   devise_for :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  resources :sightings do
-    post :upload_picture, on: :new
-    get :cleanup_tempfile, on: :new
-    get :picture, on: :member
-    get :picture, on: :new
+  resources :sightings, except: %i[edit update destroy] do
     get :recent, on: :collection
+  end
+
+  resources :pictures, only: %i[create show] do
+    get :cleanup_uploaded, on: :collection
   end
 
   scope 'taxonomy' do

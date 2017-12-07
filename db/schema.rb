@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171204145632) do
+ActiveRecord::Schema.define(version: 20171207142832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,12 +63,19 @@ ActiveRecord::Schema.define(version: 20171204145632) do
     t.index ["kingdom_id"], name: "index_phylums_on_kingdom_id"
   end
 
+  create_table "pictures", force: :cascade do |t|
+    t.binary "data", null: false
+    t.string "content_type", null: false
+    t.bigint "sighting_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sighting_id"], name: "index_pictures_on_sighting_id", unique: true
+  end
+
   create_table "sightings", force: :cascade do |t|
     t.bigint "species_id", null: false
     t.decimal "geoLatitude", null: false
     t.decimal "geoLongitude", null: false
-    t.binary "pictureData", null: false
-    t.string "pictureContentType", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -121,6 +128,7 @@ ActiveRecord::Schema.define(version: 20171204145632) do
   add_foreign_key "genus", "families"
   add_foreign_key "orders", "t_classes"
   add_foreign_key "phylums", "kingdoms"
+  add_foreign_key "pictures", "sightings"
   add_foreign_key "sightings", "species"
   add_foreign_key "sightings", "users"
   add_foreign_key "species", "genus", column: "genus_id"

@@ -1,9 +1,11 @@
 # frozen_string_literal: true
+
 class Sighting < ApplicationRecord
   belongs_to :species
   belongs_to :user
+  has_one :picture
 
-  validates :user, :species, :pictureData, :pictureContentType, presence: true
+  validates :user, :species, :picture, presence: true
   validates :geoLongitude, numericality: { greater_than_or_equal_to: -180,
                                            less_than_or_equal_to: 180 }
   validates :geoLatitude, numericality: { greater_than_or_equal_to: -90,

@@ -20,10 +20,23 @@ $( document ).ready(function() {
     });
 
     $("#pictureInput").change(function (e) {
+        $("#picture_label").addClass("d-none");
+        var progressbar = $("#progress_bar");
+        var progressLabel = progressbar.children(".progress_label")
+        progressbar.progressbar({
+            value: false,
+            change: function () {
+                if($(this).progressbar("value"))
+                progressLabel.text($(this).progressbar("value") + "%");
+            }
+        });
+        progressbar.removeClass("d-none");
+
+
         var data = new FormData();
         data.append('pictureFile', e.target.files[0]);
-        $.ajax({
-            url: Routes.upload_picture_new_sighting_path(),
+        var jqxhr = $.ajax({
+            url: Routes.pictures_path(),
             type: 'POST',
             data: data,
             cache: false,
@@ -44,23 +57,28 @@ $( document ).ready(function() {
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     $('#picturePreview').attr('src', e.target.result);
+                    $("#progress_bar").addClass("d-none");
+                    $("#picture_label").removeClass("d-none");
                 };
                 const $pictureInput = $("#pictureInput");
                 reader.readAsDataURL($pictureInput[0].files[0]);
                 $pictureInput.val(null);
+            },
+            xhr: function() {
+              var xhr = new window.XMLHttpRequest();
+
+              xhr.upload.addEventListener("progress", function(evt) {
+                  if (evt.lengthComputable) {
+                      var percentComplete = evt.loaded / evt.total;
+                      percentComplete = parseInt(percentComplete * 100);
+                      progressbar.progressbar('value', percentComplete);
+                  }
+              }, false);
+
+              return xhr;
             }
         });
     });
-
-    var submitted = false;
-    $("#new_sighting_form").submit(function(){
-        submitted = true;
-    });
-
-    window.onbeforeunload = function() {
-       if (!submitted)
-        $.get(Routes.cleanup_tempfile_new_sighting_path());
-    };
 
     window.thylacine.mapMarker = undefined;
 

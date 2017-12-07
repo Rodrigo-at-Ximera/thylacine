@@ -1,4 +1,4 @@
-<% content_for :head do %>
+  <% content_for :head do %>
   <%= map_javascript %>
   <%= javascript_include_tag 'sightings_form', 'data-turbolinks-track': 'reload'  %>
 <% end %>
@@ -7,15 +7,23 @@
     <div class="row border border-primary rounded">
       <div class="col-md-4">
         <%= form.file_field :picture, id: :pictureInput %>
-        <label for="pictureInput">
-            <%=image_tag picture_new_sighting_path,
+        <div id="progress_bar" class="d-none"><div class="progress_label"></div></div>
+        <label for="pictureInput" id="picture_label">
+          <%
+            if session[:picture_id]
+              image_src = picture_path(session[:picture_id])
+            else
+              image_src = image_path 'picture_add.png'
+            end
+          %>
+            <%=image_tag image_src,
                          class:'img-fluid rounded border border-primary '+
-                             (@sighting_form.errors&.include?(:pictureData) ? 'bg-danger': 'bg-primary'),
+                             (@sighting_form.errors&.include?(:picture) ? 'bg-danger': 'bg-primary'),
                          id:'picturePreview'%>
         </label>
-        <% if @sighting_form.errors&.include?(:pictureData) %>
+        <% if @sighting_form.errors&.include?(:picture) %>
             <div class= "invalid-feedback d-block">
-              <%=@sighting_form.errors[:pictureData].collect { |e| e.capitalize }.join(', ') %>
+              <%=@sighting_form.errors[:picture].collect { |e| e.capitalize }.join(', ') %>
             </div>
         <% end %>
 

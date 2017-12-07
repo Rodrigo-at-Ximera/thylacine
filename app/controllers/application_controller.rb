@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
   before_action :set_navs
+  before_action :cleanup_uploaded_picture, unless: -> { request.xhr? }
 
   # CanCanCan: ensure authorization happens on every action
   check_authorization unless: :devise_controller?
@@ -35,6 +36,17 @@ class ApplicationController < ActionController::Base
                    {}
                  end
   end
+
+
+  protected
+
+  def cleanup_uploaded_picture
+    return unless session[:picture_id]
+    picture = Picture.find_by(id: session[:picture_id])
+    picture.delete if picture && picture.sighting.nil?
+    session[:picture_id] = nil
+  end
+
 
   rescue_from CanCan::AccessDenied do |exception|
     if current_user
