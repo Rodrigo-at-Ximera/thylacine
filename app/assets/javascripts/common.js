@@ -4,5 +4,11 @@ $(function () {
     }
 
     $('[data-toggle="popover"]').popover();
+
+    $('[data-fade]').each(function(idx, elem){
+        setTimeout(function(){
+            $(elem).fadeOut();
+        }, $(this).attr('data-fade'))
+    })
 });
 
