@@ -5,7 +5,7 @@
 
 <%= form_for @sighting_form, url: sightings_path do |form| %>
     <div class="row border border-primary rounded">
-      <div class="col-md-4">
+      <div class="col-md-4 text-center">
         <%= form.file_field :picture, id: :pictureInput %>
         <div id="progress_bar" class="d-none"><div class="progress_label"></div></div>
         <label for="pictureInput" id="picture_label">
