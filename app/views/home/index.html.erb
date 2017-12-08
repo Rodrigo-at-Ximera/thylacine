@@ -8,7 +8,7 @@
                 data-placement="bottom" data-html="true" data-content='<%=render 'thylacine_info'%>'>?</button>
       </span>
       <% @nav_items.each do |label, target| %>
-        <%=link_to I18n.t(label), {controller: target[0], action: target[1]}, class: 'btn btn-outline-light' %>
+        <%=link_to I18n.t(label), {controller: target[0], action: target[1]}, class: 'btn btn-outline-light mt-2 mr-1' %>
       <% end %>
     </div>
   </div>
