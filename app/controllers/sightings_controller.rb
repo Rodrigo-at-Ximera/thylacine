@@ -40,7 +40,7 @@ class SightingsController < ThylacineController
           render json: {
             id: @sighting.id, species: @sighting.species.name, picture_id: @sighting.picture.id,
             classification: @sighting.species.genus.full_classification,
-            date: (I18n.localize @sighting.created_at, format: :long)
+            date: (I18n.localize @sighting.created_at, format: :long, locale: I18n.locale)
           }
         else
           render json: @sighting

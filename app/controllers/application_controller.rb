@@ -11,7 +11,8 @@ class ApplicationController < ActionController::Base
   check_authorization unless: :devise_controller?
 
   def set_locale
-    I18n.locale = params[:l] || I18n.default_locale
+    I18n.locale = params[:l] || session[:locale] || I18n.default_locale
+    session[:locale] = I18n.locale
   end
 
   def default_url_options

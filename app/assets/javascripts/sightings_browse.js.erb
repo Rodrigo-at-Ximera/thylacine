@@ -180,7 +180,7 @@ window.thylacine.showSightingInfo = function(){
     if(!thylacine.mapInfoWindow)
         thylacine.mapInfoWindow = new google.maps.InfoWindow();
     var marker = this;
-    $.get(Routes.sighting_path(this.thylacine_species_id), {info: true, l: '<%=I18n.locale%>'}, function(data){
+    $.get(Routes.sighting_path(this.thylacine_species_id), {info: true}, function(data){
         var $mapInfoWindow = $("#map-info-window").clone();
         $mapInfoWindow.find(".species").text(data.species);
         $mapInfoWindow.find(".classification").html(data.classification.join('<br/>'));
