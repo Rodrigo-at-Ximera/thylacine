@@ -1,0 +1,14 @@
+$(function () {
+    const I18n = {
+        en: {
+            sending: 'Sending: ',
+            processing: 'Saving...'
+        },
+        es: {
+            sending: 'Enviando: ',
+            processing: 'Guardando...'
+        }
+    }
+
+  window.I18n = I18n[$('body').data('lang')];
+});

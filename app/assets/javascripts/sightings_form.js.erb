@@ -27,13 +27,13 @@ $( document ).ready(function() {
             value: false,
             change: function () {
                 if($(this).progressbar("value")) {
-                    progressLabel.text("<%= I18n.t :sending%>: " + $(this).progressbar("value") + "%");
+                    progressLabel.text(I18n.sending + $(this).progressbar("value") + "%");
                     progressLabel.removeClass('blinking');
                 }
             },
             complete: function() {
                 $(this).progressbar('value', false);
-                progressLabel.text("<%= I18n.t :processing%>");
+                progressLabel.text(I18n.processing);
                 progressLabel.addClass('blinking');
             }
         });

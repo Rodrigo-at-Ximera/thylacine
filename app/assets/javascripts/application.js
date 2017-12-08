@@ -17,3 +17,4 @@
 //= require bootstrap
 //= require js-routes
 //= require common
+//= require I18n

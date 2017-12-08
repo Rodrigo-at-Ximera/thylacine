@@ -14,7 +14,7 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body class="bg-dark">
+  <body class="bg-dark" data-lang="<%=I18n.locale%>">
     <div class="container-fluid">
       <%= render 'layouts/notices' %>
       <header class="navbar navbar-dark navbar-expand-lg">
