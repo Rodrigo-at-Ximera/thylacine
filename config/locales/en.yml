@@ -41,6 +41,8 @@ en:
   save_success: "%{model} saved successfully."
   taxonomy_manage_auth_fail: You must be a Taxonomist to create %{model}.
   must_sign_in: You must be signed in to perform this action.
+  sending: Sending
+  processing: Saving...
 
   sightings:
     new:

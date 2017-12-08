@@ -42,6 +42,8 @@ es:
   save_success: "%{model} guardado exitosamente."
   taxonomy_manage_auth_fail: Debés ser un Taxonomista para crear %{model}
   must_sign_in: Debes estar logineado para realizar esta acción.
+  sending: Enviando
+  processing: Guardando...
 
   sightings:
     new:

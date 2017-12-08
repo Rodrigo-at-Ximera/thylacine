@@ -26,8 +26,15 @@ $( document ).ready(function() {
         progressbar.progressbar({
             value: false,
             change: function () {
-                if($(this).progressbar("value"))
-                progressLabel.text($(this).progressbar("value") + "%");
+                if($(this).progressbar("value")) {
+                    progressLabel.text("<%= I18n.t :sending%>: " + $(this).progressbar("value") + "%");
+                    progressLabel.removeClass('blinking');
+                }
+            },
+            complete: function() {
+                $(this).progressbar('value', false);
+                progressLabel.text("<%= I18n.t :processing%>");
+                progressLabel.addClass('blinking');
             }
         });
         progressbar.removeClass("d-none");

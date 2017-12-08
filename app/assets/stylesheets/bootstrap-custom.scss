@@ -61,14 +61,25 @@ abbr[title], abbr[data-original-title] {
 #progress_bar{
   @extend .rounded;
   height:100%;
+  min-height: 15rem;
   background-color: $light;
 }
 
 #progress_bar .progress_label{
   position: absolute;
   font-size: 2rem;
-  left: calc(50% - 1em);
+  left: 0;
   top: calc(50% - 0.5em);
-
+  width:100%;
+  text-align: center;
+  text-shadow: $light .1rem 0 .1rem, $light 0 .1rem .1rem, $light 0 -.1rem .1rem, $light -.1rem 0 .1rem;
+  font-weight: bold;
 }
 
+.blinking{
+  animation: blinker 1.5s linear infinite;
+}
+
+@keyframes blinker {
+  50% { opacity: 0.5; }
+}
