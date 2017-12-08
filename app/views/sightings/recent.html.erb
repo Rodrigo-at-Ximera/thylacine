@@ -7,7 +7,7 @@
         </div>
         <div class="card-body">
           <h4 class="card-title"><%= sighting.species.name %></h4>
-          <h6 class="card-subtitle"><%=sighting.species.genus.full_classification%></h6>
+          <h6 class="card-subtitle"><%=sighting.species.genus.full_classification.join(', ')%></h6>
         </div>
         <div class="card-footer">
           <small><%=l sighting.created_at, format: :long%></small>
