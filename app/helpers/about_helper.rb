@@ -16,7 +16,8 @@ module AboutHelper
     gbif:             ['GBIF API', 'https://www.gbif.org/developer/summary'],
     heroku:           ['Heroku', 'https://www.heroku.com/'],
     linkedin:         ['LinkedIn', 'https://www.linkedin.com/in/rodrigocharon/'],
-    upwork:           ['Upwork', 'https://www.upwork.com/o/profiles/users/_~01b1339734965265fb/']
+    upwork:           ['Upwork', 'https://www.upwork.com/o/profiles/users/_~01b1339734965265fb/'],
+    rspec:            ['RSpec (v3.7)', 'http://rspec.info/']
   }.freeze
 
   def about_link(key)

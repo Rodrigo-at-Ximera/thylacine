@@ -1,0 +1,8 @@
+
+carnivora:
+  name: Carnivora
+  t_class: mammal
+
+odonata:
+  name: Odonata
+  t_class: insect

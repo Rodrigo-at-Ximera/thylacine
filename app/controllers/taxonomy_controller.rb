@@ -32,6 +32,10 @@ class TaxonomyController < ApplicationController
                   id: object.id }
     end
     render json: result
+  rescue TaxonomyCategoryError => e
+    authorize! :index, Sighting
+    response.status = 404
+    render plain: e.message
   end
 
   def children
@@ -50,6 +54,10 @@ class TaxonomyController < ApplicationController
         category: child.class.model_name.param_key,
         has_children: !child.children.nil? }
     end)
+  rescue TaxonomyCategoryError => e
+    authorize! :index, Sighting
+    response.status = 404
+    render plain: e.message
   end
 
   def sightings
@@ -104,7 +112,11 @@ class TaxonomyController < ApplicationController
   # Parse the model from a string restricted to valid taxonomy models
   def parse_model(category)
     parsed = Object.const_get category.camelize
-    raise 'Invalid taxonomy model' unless TAXONOMY_MODELS.include?(parsed)
+    # category is a valid class, but not part of the taxonomy
+    raise TaxonomyCategoryError, 'Invalid taxonomy model' unless TAXONOMY_MODELS.include?(parsed)
     parsed
+  rescue NameError
+    # category is not a class name
+    raise TaxonomyCategoryError, 'Invalid taxonomy model'
   end
 end

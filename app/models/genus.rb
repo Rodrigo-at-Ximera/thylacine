@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Genus < TaxonomyRecord
   belongs_to :family
   has_many :species

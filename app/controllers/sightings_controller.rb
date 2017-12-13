@@ -8,7 +8,6 @@ class SightingsController < ThylacineController
 
   def index
     authorize! :index, Sighting
-    @kingdoms = Kingdom.all
   end
 
   def new

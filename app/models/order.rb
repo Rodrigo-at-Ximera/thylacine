@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Order < TaxonomyRecord
   belongs_to :t_class
   has_many :families

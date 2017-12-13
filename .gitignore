@@ -22,3 +22,6 @@
 config/secrets.yml.key
 
 .idea/*
+
+spec/examples.txt
+coverage/*

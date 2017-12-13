@@ -1,0 +1,8 @@
+
+mammal:
+  name: Mammalia
+  phylum: chordata
+
+insect:
+  name: Insecta
+  phylum: arthropoda

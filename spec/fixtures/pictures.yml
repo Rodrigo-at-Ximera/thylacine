@@ -1,0 +1,9 @@
+
+one:
+  data: picture data
+  content_type: image/png
+
+two:
+  data: another picture data
+  content_type: image/png
+  sighting: ba_damselfly

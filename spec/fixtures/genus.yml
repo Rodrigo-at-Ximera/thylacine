@@ -1,0 +1,10 @@
+_fixture:
+  model_class: Genus
+
+felis:
+  name: Felis
+  family: felidae
+
+ischnura:
+  name: Ischnura
+  family: coenagrionidae
