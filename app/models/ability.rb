@@ -11,6 +11,7 @@ class Ability
 
     if user.role? :spotter
       can %i[challenge create], Sighting
+      can :create, Picture
       can :manage, Sighting, user_id: user.id
     end
 
