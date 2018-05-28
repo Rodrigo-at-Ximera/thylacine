@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171207142832) do
+ActiveRecord::Schema.define(version: 20180528155540) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,18 @@ ActiveRecord::Schema.define(version: 20171207142832) do
     t.index ["sighting_id"], name: "index_pictures_on_sighting_id", unique: true
   end
 
+  create_table "sighting_challenges", force: :cascade do |t|
+    t.bigint "sighting_id"
+    t.bigint "species_id"
+    t.bigint "user_id"
+    t.string "justification", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sighting_id"], name: "index_sighting_challenges_on_sighting_id"
+    t.index ["species_id"], name: "index_sighting_challenges_on_species_id"
+    t.index ["user_id"], name: "index_sighting_challenges_on_user_id"
+  end
+
   create_table "sightings", force: :cascade do |t|
     t.bigint "species_id", null: false
     t.decimal "geoLatitude", null: false
@@ -118,6 +130,8 @@ ActiveRecord::Schema.define(version: 20171207142832) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "role", null: false
+    t.string "provider"
+    t.string "uid"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -129,6 +143,9 @@ ActiveRecord::Schema.define(version: 20171207142832) do
   add_foreign_key "orders", "t_classes"
   add_foreign_key "phylums", "kingdoms"
   add_foreign_key "pictures", "sightings"
+  add_foreign_key "sighting_challenges", "sightings"
+  add_foreign_key "sighting_challenges", "species"
+  add_foreign_key "sighting_challenges", "users"
   add_foreign_key "sightings", "species"
   add_foreign_key "sightings", "users"
   add_foreign_key "species", "genus", column: "genus_id"

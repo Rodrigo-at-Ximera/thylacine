@@ -3,7 +3,8 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :omniauthable, omniauth_providers: [:google_oauth2]
 
   before_validation :set_default_role
 
@@ -13,6 +14,14 @@ class User < ApplicationRecord
 
   def role?(base_role)
     ROLES.index(base_role.to_s) <= ROLES.index(role) if role
+  end
+
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0,20]
+      user.skip_confirmation!
+    end
   end
 
 

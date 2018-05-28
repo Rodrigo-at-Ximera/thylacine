@@ -71,6 +71,10 @@ gem 'cancancan', '~> 2.1.2'
 gem 'devise', '~> 4.3.0'
 gem 'devise-i18n'
 
+#OmniAuth
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+
 # Frontend
 gem 'bootstrap', '~> 4.0.0.beta2.1'
 gem 'jquery-rails'
