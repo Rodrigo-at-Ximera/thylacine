@@ -10,7 +10,7 @@ module GoogleMapHelper
                                     zoom: 10,
                                     size: '150x150',
                                     language: I18n.locale,
-                                    key: Rails.application.secrets.google_maps_api_key)
+                                    key: Rails.application.credentials.google_maps_api_key)
 
     image_tag src, options
   end
@@ -18,7 +18,7 @@ module GoogleMapHelper
   def map_javascript
     src = URI(BASE_JAVASCRIPT_URL)
     src.query = URI.encode_www_form(language: I18n.locale,
-                                    key: Rails.application.secrets.google_maps_api_key)
+                                    key: Rails.application.credentials.google_maps_api_key)
     javascript_include_tag src
   end
 end

@@ -25,3 +25,5 @@ config/secrets.yml.key
 
 spec/examples.txt
 coverage/*
+# Ignore master key for decrypting credentials and more.
+/config/master.key
