@@ -18,3 +18,4 @@
 //= require js-routes
 //= require common
 //= require I18n
+//= require activestorage

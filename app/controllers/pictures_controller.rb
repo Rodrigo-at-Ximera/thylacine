@@ -1,7 +1,5 @@
 # frozen_string_literal:true
 
-require 'exifr/jpeg'
-
 # Pictures Controller
 class PicturesController < ApplicationController
 
@@ -11,27 +9,21 @@ class PicturesController < ApplicationController
     authorize! :new, Picture
     cleanup_uploaded_picture
 
-    picture = Picture.create data: params[:pictureFile].tempfile.read,
-                             content_type: params[:pictureFile].content_type
-
+    picture = ActiveStorage::Blob.create_after_upload!(
+      io: params[:picture].tempfile,
+      filename: params[:picture].original_filename,
+      content_type: params[:picture].content_type
+    )
+    picture.analyze
     session[:picture_id] = picture.id
 
-    response_data = { gps: false, id: picture.id }
-    if params[:pictureFile].content_type == 'image/jpeg'
-      e = EXIFR::JPEG.new(params[:pictureFile].tempfile.path)
-      if e.exif? && e.exif.gps
-        response_data[:gps] = true
-        response_data[:geoLatitude] = e.exif.gps.latitude
-        response_data[:geoLongitude] = e.exif.gps.longitude
-      end
+    response_data = { id: picture.id, gps: false, src: url_for(picture) }
+    if picture.metadata[:latitude]
+      response_data[:gps] = true
+      response_data[:geoLatitude] = picture.metadata[:latitude]
+      response_data[:geoLongitude] = picture.metadata[:longitude]
     end
 
     render json: response_data
-  end
-
-  def show
-    picture = Picture.find params[:id]
-    authorize! :read, picture
-    send_data picture.data, filename: 'uploaded_image', type: picture.content_type, disposition: :inline
   end
 end

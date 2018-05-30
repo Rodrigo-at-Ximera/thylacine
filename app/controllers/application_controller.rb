@@ -43,8 +43,8 @@ class ApplicationController < ActionController::Base
 
   def cleanup_uploaded_picture
     return unless session[:picture_id]
-    picture = Picture.find_by(id: session[:picture_id])
-    picture.delete if picture && picture.sighting.nil?
+    picture = ActiveStorage::Blob.unattached.find_by(id: session[:picture_id])
+    picture&.destroy
     session[:picture_id] = nil
   end
 

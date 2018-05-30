@@ -39,7 +39,8 @@ class SightingsController < ThylacineController
           render json: {
             id: @sighting.id, species: @sighting.species.name, picture_id: @sighting.picture.id,
             classification: @sighting.species.genus.full_classification,
-            date: (I18n.localize @sighting.created_at, format: :long, locale: I18n.locale)
+            date: (I18n.localize @sighting.created_at, format: :long, locale: I18n.locale),
+            picture: url_for(@sighting.picture.variant(resize: '200x200'))
           }
         else
           render json: @sighting
@@ -50,7 +51,7 @@ class SightingsController < ThylacineController
 
   def recent
     authorize! :read, Sighting
-    @sightings = Sighting.with_taxonomy.order(created_at: :desc).limit(20)
+    @sightings = Sighting.with_taxonomy.with_attached_picture.order(created_at: :desc).limit(20)
   end
 
 
@@ -59,7 +60,7 @@ class SightingsController < ThylacineController
   def sighting_form_params
     params.require(:sighting_form).permit %i[species species_id genus genus_id family family_id
                                              order order_id t_class t_class_id phylum phylum_id
-                                             kingdom kingdom_id geoLatitude geoLongitude]
+                                             kingdom kingdom_id geoLatitude geoLongitude picture]
   end
 
   def sighting_form_save(sighting_form)
@@ -67,7 +68,8 @@ class SightingsController < ThylacineController
     sighting.species = get_or_initialize_species sighting_form
     sighting.geoLatitude = sighting_form.geoLatitude
     sighting.geoLongitude = sighting_form.geoLongitude
-    sighting.picture = Picture.find(session[:picture_id]) if session[:picture_id]
+    sighting.picture.attach ActiveStorage::Blob.find_by(id: session[:picture_id]) if session[:picture_id]
+
 
     sighting.user = current_user
 

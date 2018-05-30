@@ -12,7 +12,7 @@ module GoogleMapHelper
                                     language: I18n.locale,
                                     key: Rails.application.credentials.google_maps_api_key)
 
-    image_tag src, options
+    image_tag src.to_s, options
   end
 
   def map_javascript

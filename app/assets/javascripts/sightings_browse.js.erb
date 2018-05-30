@@ -185,7 +185,7 @@ window.thylacine.showSightingInfo = function(){
         $mapInfoWindow.find(".species").text(data.species);
         $mapInfoWindow.find(".classification").html(data.classification.join('<br/>'));
         $mapInfoWindow.find(".date").text(data.date);
-        $mapInfoWindow.find(".picture").attr('src', Routes.picture_path(data.picture_id));
+        $mapInfoWindow.find(".picture").attr('src', data.picture);
 
         thylacine.mapInfoWindow.setContent($mapInfoWindow[0]);
         thylacine.mapInfoWindow.open(thylacine.mapView, marker);

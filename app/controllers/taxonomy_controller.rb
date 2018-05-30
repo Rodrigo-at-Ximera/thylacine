@@ -66,8 +66,10 @@ class TaxonomyController < ApplicationController
     object = model.find(params[:id])
     sightings = object.sightings
     results = []
-    sightings.find_each do |sighting|
-      results << { id: sighting.id, lat: sighting.geoLatitude, lng: sighting.geoLongitude }
+    sightings.with_attached_picture.find_each do |sighting|
+      if sighting.picture.attached?
+        results << { id: sighting.id, lat: sighting.geoLatitude, lng: sighting.geoLongitude }
+      end
     end
     render json: results
   end

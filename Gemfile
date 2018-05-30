@@ -85,6 +85,8 @@ gem 'js-routes'
 
 # Backend
 gem 'exifr', '~> 1.3.2'
+gem 'google-cloud-storage'
+gem 'mini_magick'
 gem 'rest-client', '~> 2.0.2'
 
 

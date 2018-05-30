@@ -41,7 +41,7 @@ $( document ).ready(function() {
 
 
         var data = new FormData();
-        data.append('pictureFile', e.target.files[0]);
+        data.append('picture', e.target.files[0]);
         var jqxhr = $.ajax({
             url: Routes.pictures_path(),
             type: 'POST',
@@ -61,7 +61,7 @@ $( document ).ready(function() {
                     });
 
                 }
-                $('#picturePreview').attr('src', Routes.picture_path(data.id));
+                $('#picturePreview').attr('src', data.src);
                 $("#progress_bar").addClass("d-none");
                 $("#picture_label").removeClass("d-none");
                 $("#pictureInput").val(null);
