@@ -18,9 +18,8 @@
 
       <% if devise_mapping.rememberable? -%>
           <%= f.label :remember_me, class: 'custom-control custom-checkbox' do %>
-            <%= f.check_box :remember_me, class: 'custom-control-input' %>
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description"><%=t :remember_me, scope: 'activerecord.attributes.user'%></span>
+            <%= f.check_box :remember_me, class: 'custom-control-input', id: 'remember_me' %>
+            <label class="custom-control-label" for="remember_me"><%=t :remember_me, scope: 'activerecord.attributes.user'%></label>
           <% end %>
       <% end -%>
       <div class="row d-flex justify-content-around mb-2">
@@ -28,6 +27,11 @@
         <%= link_to (t :cancel), root_path,  class: 'btn btn-danger'%>
       </div>
     <% end %>
+
+    <hr/>
+
+    <%= render "devise/shared/social_login" %>
+
     <div class="row text-center small justify-content-center">
       <%= render "devise/shared/links" %>
     </div>

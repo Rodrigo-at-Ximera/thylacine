@@ -75,6 +75,7 @@ gem 'devise-i18n'
 
 #OmniAuth
 gem 'omniauth'
+gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 
 # Frontend

@@ -1,0 +1,9 @@
+<%= link_to omniauth_authorize_path(resource_name, :google_oauth2), class: 'btn btn-primary' do %>
+  <div class="omniauth-logo-bg"><%= image_tag 'google.svg', class: 'omniauth-logo' %></div>
+  <%=t 'devise.shared.links.sign_in_with_provider', provider: 'Google' %>
+<% end %>
+
+<%= link_to omniauth_authorize_path(resource_name, :facebook), class: 'btn btn-primary' do %>
+  <div class="omniauth-logo-bg"><%= image_tag 'facebook.svg', class: 'omniauth-logo' %></div>
+  <%=t 'devise.shared.links.sign_in_with_provider', provider: 'Facebook' %>
+<% end %>
