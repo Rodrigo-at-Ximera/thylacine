@@ -33,6 +33,7 @@ es:
   about: Acerca de
   about_site: Acerca del sitio
   about_me: Acerca de mi
+  privacy_policy: Politica de privacidad
   browse: Explorar
   new_sighting: Reportar avistamiento
   recent_sightings: Avistamientos recientes
@@ -145,6 +146,9 @@ es:
       - :year
 
   devise:
-      registrations:
-        new:
-          minimum_characters: "Mínimo %{count} caracteres"
+    registrations:
+      new:
+        minimum_characters: "Mínimo %{count} caracteres"
+    shared:
+      links:
+        sign_in_with_provider: Usar %{provider}
