@@ -2,9 +2,10 @@
 
 module AboutHelper
   ABOUT_LINKS = {
-    rails:            ['Ruby on Rails (v5.1)', 'http://rubyonrails.org/'],
+    rails:            ['Ruby on Rails (v5.2)', 'http://rubyonrails.org/'],
     postgresql:       ['PostgreSQL (v10.1)', 'https://www.postgresql.org/'],
-    devise:           ['Devise (v4.3)', 'https://github.com/plataformatec/devise'],
+    devise:           ['Devise (v4.4)', 'https://github.com/plataformatec/devise'],
+    omniauth:         ['OmniAuth (v1.8)', 'https://github.com/omniauth/omniauth'],
     cancancan:        ['CanCanCan (v2.1)', 'https://github.com/CanCanCommunity/cancancan'],
     exifr:            ['EXIF Reader (v1.3)', 'https://github.com/remvee/exifr'],
     rest_client:      ['REST Client (v2.0)', 'https://github.com/rest-client/rest-client'],
