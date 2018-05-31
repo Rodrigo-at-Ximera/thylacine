@@ -77,6 +77,7 @@ gem 'devise-i18n'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-linkedin-oauth2'
 
 # Frontend
 gem 'bootstrap', '~> 4.0.0.beta2.1'
