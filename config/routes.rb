@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   end
 
   get 'about', to: 'about#index'
+  get 'privacy', to: 'privacy#index'
 
   root to: 'home#index'
 end
