@@ -84,18 +84,6 @@ ActiveRecord::Schema.define(version: 2018_05_30_140728) do
     t.index ["kingdom_id"], name: "index_phylums_on_kingdom_id"
   end
 
-  create_table "sighting_challenges", force: :cascade do |t|
-    t.bigint "sighting_id"
-    t.bigint "species_id"
-    t.bigint "user_id"
-    t.string "justification", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["sighting_id"], name: "index_sighting_challenges_on_sighting_id"
-    t.index ["species_id"], name: "index_sighting_challenges_on_species_id"
-    t.index ["user_id"], name: "index_sighting_challenges_on_user_id"
-  end
-
   create_table "sightings", force: :cascade do |t|
     t.bigint "species_id", null: false
     t.decimal "geoLatitude", null: false
@@ -154,9 +142,6 @@ ActiveRecord::Schema.define(version: 2018_05_30_140728) do
   add_foreign_key "genus", "families"
   add_foreign_key "orders", "t_classes"
   add_foreign_key "phylums", "kingdoms"
-  add_foreign_key "sighting_challenges", "sightings"
-  add_foreign_key "sighting_challenges", "species"
-  add_foreign_key "sighting_challenges", "users"
   add_foreign_key "sightings", "species"
   add_foreign_key "sightings", "users"
   add_foreign_key "species", "genus", column: "genus_id"
