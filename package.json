@@ -1,5 +1,11 @@
 {
   "name": "thylacine",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "@rails/webpacker": "4.2.2",
+    "yarn": "^1.21.1"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^3.10.1"
+  }
 }
