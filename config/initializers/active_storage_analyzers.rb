@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'exifr/jpeg'
 
 module ActiveStorage
@@ -7,7 +5,7 @@ module ActiveStorage
     def metadata
       meta = super || {}
       meta.merge(read_image do |image|
-        gps_from_exif image || {}
+        ( gps_from_exif image ) || {}
       end)
     end
 

@@ -1,5 +1,3 @@
-# frozen_string_literal:true
-
 # Pictures Controller
 class PicturesController < ApplicationController
 
